@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  db:
+    image: bitnami/mysql:5.7
+    container_name: tg-db
+    environment:
+      - TG_WEBSITE_NAME
+      - TG_WEBSITE_URL
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/mysql/anx-db.cnf:/opt/bitnami/mysql/conf/my_custom.cnf
+      - ./docker/mysql/data:/bitnami/mysql/data
+      - ./docker/mysql/initdb.d/init_db.sh:/docker-entrypoint-initdb.d/init_db.sh
+    # environment:
+    #   TZ: "America/Vancouver"
+    healthcheck:
+      test: ["CMD", "/opt/bitnami/scripts/mysql/healthcheck.sh"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+    networks:
+      - tg-network
+
+  app:
+    tty: true # Enables debugging capabilities when attached to this container.
+    image: docker.io/bitnami/python:3.7
+    container_name: tg-app
+    environment:
+      - TG_WEBSITE_NAME
+      - TG_WEBSITE_URL
+      - TG_API_KEY=e8ddc55d93eb0e8281b255ea236dcc4f
+      - MYSQL_DB_HOST=db
+      - MYSQL_DB_PORT=3306
+      - MYSQL_DATABASE=tg_db
+      - MYSQL_USER=tg_user
+      - MYSQL_PASSWORD=tg_password
+    ports:
+      - 8000:8000
+    volumes:
+      - ./app/backend:/app
+    networks:
+      - tg-network
+    depends_on:
+      - db
+
+networks:
+  tg-network:
+    name: tg-network
