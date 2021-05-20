@@ -1,7 +1,7 @@
 ## to reset DB files
 
 ```bash
-rm -rf ./docker/mysql/data/*
+rm -rf ./docker/mysql/data/* && rm -rf ./docker/mysql/data/.*
 ```
 
 ## To log into DB

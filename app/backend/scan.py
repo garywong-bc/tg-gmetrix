@@ -37,10 +37,11 @@ mydb = mysql.connector.connect(port=tg_port, host=tg_host,user=tg_user,password=
 cursor = mydb.cursor()
 
 api_key = os.getenv('TG_API_KEY', "Value does not exist")
-sql_websites = "SELECT * FROM websites"
-cursor.execute(new_scan)
+sql_websites = "SELECT * FROM tg_websites"
+cursor.execute(sql_websites)
 records = cursor.fetchall()
 for row in records:
     clientid = str(row[0])
     name = str(row[1])
     c_url = str(row[2])
+    print(clientid, name, c_url)

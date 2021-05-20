@@ -14,7 +14,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./docker/mysql/anx-db.cnf:/opt/bitnami/mysql/conf/my_custom.cnf
+      - ./docker/mysql/my_custom.cnf:/opt/bitnami/mysql/conf/my_custom.cnf
       - ./docker/mysql/data:/bitnami/mysql/data
       - ./docker/mysql/initdb.d/init_db.sh:/docker-entrypoint-initdb.d/init_db.sh
     # environment:
@@ -34,12 +34,12 @@ services:
     environment:
       - TG_WEBSITE_NAME
       - TG_WEBSITE_URL
-      - TG_API_KEY=e8ddc55d93eb0e8281b255ea236dcc4f
-      - MYSQL_DB_HOST=db
-      - MYSQL_DB_PORT=3306
-      - MYSQL_DATABASE=tg_db
-      - MYSQL_USER=tg_user
-      - MYSQL_PASSWORD=tg_password
+      - TG_API_KEY
+      - MYSQL_DB_HOST
+      - MYSQL_DB_PORT
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
     ports:
       - 8000:8000
     volumes:
